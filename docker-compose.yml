@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  security-service:
+    build:
+      context: .
+      dockerfile: ./security-service/Dockerfile
+    image: security-service
+    depends_on:
+      - security-db
+    restart: always
+    ports:
+      - "8085:8085"
+
+
+  security-db:
+    image: postgres:14.2-alpine
+    restart: always
+    volumes:
+      - ./db/sql/registrationdb.sql:/docker-entrypoint-initdb.d/registrationdb.sql
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: reg
+      POSTGRES_DB: reg
+      POSTGRES_USER: reg
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reg"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      
+
+  react-ui:
+    build:
+      context: ./my-app
+    ports:
+      - "3000:3000"
+    container_name: react-ui
+    volumes:
+      - ./my-app:/usr/src/app/my-app
+      - /usr/src/app/my-app/node_modules

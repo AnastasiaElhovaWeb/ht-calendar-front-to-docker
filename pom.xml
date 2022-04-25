@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>hr-calendar</groupId>
+    <artifactId>hh-hr-calendar</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>common-module</module>
+        <module>domain-module</module>
+        <module>microsoft-integration-service</module>
+        <module>hr-calendar-service</module>
+        <module>security-service</module>
+    </modules>
+
+    <parent>
+        <groupId>ru.hh.public-pom</groupId>
+        <artifactId>public-pom</artifactId>
+        <version>1.50.0</version>
+    </parent>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+        <nab.version>4.33.1</nab.version>
+        <lombok.version>1.18.24</lombok.version>
+    </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>ru.hh.checkstyle</groupId>
+                <artifactId>hh-maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <failOnViolation>false</failOnViolation>
+                    <sourceDirectories combine.children="append">
+                        <sourceDirectory>${basedir}/src</sourceDirectory>
+                    </sourceDirectories>
+                    <hhCheckStyleConfig combine.children="append">
+                        <config>shared-checkstyle.xml</config>
+                    </hhCheckStyleConfig>
+                    <encoding>UTF-8</encoding>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>hh-public</id>
+            <name>hh public releases repository</name>
+            <url>https://m2.hh.ru/content/repositories/public-releases</url>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>

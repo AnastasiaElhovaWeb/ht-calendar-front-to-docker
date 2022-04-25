@@ -1,0 +1,1 @@
+master.jdbcUrl=jdbc:postgresql://security-db:5432/reg
